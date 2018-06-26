@@ -62,7 +62,31 @@ The number of candidate locations that match the given criteria.*/
 public class JobMatchingScore {
 
     int jobMatchingScore(String[] locations, String criteria) {
-        return 0;
+        String[] splits = criteria.split(",", 3);
+        String[] criterias = reverseArray(splits);
+        int count = 0;
+        for(int i=0; i<locations.length; i++) {
+            if(isLocationMatchesCriteria(locations[i], criterias))
+                count++;
+        }
+        return count;
+    }
+
+    private boolean isLocationMatchesCriteria(String location, String[] criterias) {
+        String[] locationsArray = location.split(",",3);
+        boolean cityMatch = criterias.length<3 || criterias[2].equals(locationsArray[0]) ? true : false;
+        boolean stateMatch = criterias.length<2 || criterias[1].trim().equals(locationsArray[1].trim()) ? true : false;
+        boolean countryMatch = criterias[0].trim().equals(locationsArray[2].trim()) ? true : false;
+        if(cityMatch && stateMatch && countryMatch)
+            return true;
+        return false;
+    }
+
+    private String[] reverseArray(String[] splits) {
+        String[] criterias = new String[splits.length];
+        for(int i=criterias.length-1; i>=0; i--)
+            criterias[criterias.length-(i+1)] = splits[i];
+        return criterias;
     }
 
 }
